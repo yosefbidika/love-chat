@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Message for Miiso koo 💖</title>
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  text-align: center;
+  background: linear-gradient(135deg, #ffe0ea, #ff9fcc);
+  padding: 30px;
+  color: black;
+}
+h1 { color: #ff3366; font-size: 3em; text-shadow: 2px 2px 5px #ffb3c6; }
+p { font-size: 20px; font-weight: bold; color:rgb(214, 31, 31)#06b300; }
+h3 { margin-top: 30px; color: blue; }
+button.choice-btn {
+  border: none;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 15px;
+  cursor: pointer;
+  font-size: 18px;
+  color: green;
+  width:210px;
+  height: 60px;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+button.choice-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0px 0px 20px #6f8000;
+}
+textarea {
+  width: 80%;
+  height: 80px;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  font-size: 16px;
+}
+button.send-btn {
+  background: #7b0825;
+  color: green;
+  padding: 10px 20px;
+  border-radius: 25px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background 0.3s;
+}
+button.send-btn:hover { background: #e62e5c; }
+#adminReply {
+  margin-top: 20px;
+  font-weight: bold;
+  color: #c80a0a;
+  font-size: 18px;
+  text-shadow: 1px 1px 2px #ff3366;
+}
+</style>
+</head>
+<body>
+
+<h1>❤️ Miiso koo 💖</h1>
+<h2>Kun ergaa Yosi kee biraa siif ergameedha !</h2>
+
+<body>
+    
+</body>
+</html></h2>
+<p>Jaartii koo, Kanneen armaan gadii keessaa tokko filadhu wanta amma barbaadaa jirtu!</p>
+
+<h3>Filannoo kee Natti himi 🎁</h3>
+<div>
+  <button class="choice-btn" id="flowers" onclick="selectChoice('Flowers 🌹')" >Abaaboo 🌹</button>
+
+  <button class="choice-btn" id="gift" onclick="selectChoice('Kennaa Addaa 🎁')" >Kennaa Addaa 🎁</button>
+
+  <button class="choice-btn" id="poetry" onclick="selectChoice('Walaloo Jaalalaa ✍️')" >Walaloo Jaalalaa ✍️</button>
+
+  <button class="choice-btn" id="other" onclick="selectChoice('Kan Biraa 🌀')" >Kan Biraa 🌀</button>
+</div>
+
+<h3>Yaada addaa yoo Qabaatte naaf barreessi, waan sitti tole , yoo barbaadde na arrabsi , mallattoo barbaadde naaf ergi.💌</h3>
+<textarea id="herMessage" placeholder="yaada kee naaf barreessi"></textarea><br>
+<button class="send-btn" onclick="sendMessage()">Ergiif 💖</button>
+
+<h3>Siif deebisaa jira (Yosef):</h3>
+<p id="adminReply">Hanga Inni siif deebisutti obsaaan eeggadhu !</p>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDiWxG7a4YwDhEP2s-Au3dmlQxcHceleTY",
+  authDomain: "haasaa-jaalaala.firebaseapp.com",
+  databaseURL: "https://haasaa-jaalaala-default-rtdb.firebaseio.com",
+  projectId: "haasaa-jaalaala",
+  storageBucket: "haasaa-jaalaala.firebasestorage.app",
+  messagingSenderId: "959315633354",
+  appId: "1:959315633354:web:54b7da7adddf7af5014033",
+  measurementId: "G-VYVYB7NL0J"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+let selectedChoice = "";
+
+function selectChoice(choice){
+  selectedChoice = choice;
+  alert("You selected: " + choice);
+}
+
+function sendMessage(){
+  const msg = document.getElementById("herMessage").value;
+  if(selectedChoice === "" || msg === ""){
+    alert("Please choose a gift and write a message!");
+    return;
+  }
+  db.ref('messages').push({
+    userName: "Miiso koo",
+    giftChoice: selectedChoice,
+    userMessage: msg,
+    adminReply: ""
+  }, function(error){
+    if(error) alert("Error sending message: " + error);
+    else alert("Message sent! 💌");
+  });
+  document.getElementById("herMessage").value = "";
+}
+
+// Listen for admin reply
+db.ref('messages').on('child_changed', (snapshot)=>{
+  const reply = snapshot.val().adminReply;
+  if(reply) document.getElementById('adminReply').innerText = reply;
+});
+</script>
+
+</body>
+</html>

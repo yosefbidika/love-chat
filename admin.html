@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Panel 💖</title>
+<style>
+body { font-family:'Segoe UI',sans-serif; text-align:center; background:linear-gradient(135deg,#e3e0ff,#ff9fcc); padding:30px; color:#fff; }
+h1 { color:#ff3366; font-size:3em; text-shadow:2px 2px 5px #de0b40; }
+h3 { margin-top:20px; }
+textarea { width:80%; height:80px; border-radius:10px; padding:10px; margin-top:10px; font-size:16px; border:none; }
+button.send-btn { background:#7b0825; color:blue; padding:10px 20px; border-radius:25px; margin-top:10px; cursor:pointer; font-size:18px; transition:0.3s; }
+button.send-btn:hover { background:#e62e5c; }
+p { font-size:18px; margin-top:10px; color:#ca0b0b; text-shadow:1px 1px 2px #ff3366; }
+</style>
+</head>
+<body>
+
+<h1>Admin Panel 💖</h1>
+
+<h3>User Name:</h3>
+<p id="userName">Waiting...</p>
+
+<h3>Gift Choice:</h3>
+<p id="userGift">Waiting...</p>
+
+<h3>User Message:</h3>
+<p id="userMessage">Waiting...</p>
+
+<h3>Reply to User:</h3>
+<textarea id="adminMessage" placeholder="Type your reply here"></textarea><br>
+<button class="send-btn" onclick="sendReply()">Send Reply 💌</button>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDiWxG7a4YwDhEP2s-Au3dmlQxcHceleTY",
+  authDomain: "haasaa-jaalaala.firebaseapp.com",
+  databaseURL: "https://haasaa-jaalaala-default-rtdb.firebaseio.com",
+  projectId: "haasaa-jaalaala",
+  storageBucket: "haasaa-jaalaala.firebasestorage.app",
+  messagingSenderId: "959315633354",
+  appId: "1:959315633354:web:54b7da7adddf7af5014033",
+  measurementId: "G-VYVYB7NL0J"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+
+let latestMessageKey = null;
+
+// Listen for new messages
+db.ref('messages').on('child_added', (snapshot)=>{
+  const data = snapshot.val();
+  latestMessageKey = snapshot.key;
+  document.getElementById('userName').innerText = data.userName;
+  document.getElementById('userGift').innerText = data.giftChoice;
+  document.getElementById('userMessage').innerText = data.userMessage;
+  document.getElementById('adminMessage').value = data.adminReply || "";
+});
+
+// Listen for updates
+db.ref('messages').on('child_changed', (snapshot)=>{
+  const data = snapshot.val();
+  document.getElementById('adminMessage').value = data.adminReply || "";
+});
+
+function sendReply(){
+  const reply = document.getElementById('adminMessage').value;
+  if(!reply) return alert("Type a reply first!");
+  if(!latestMessageKey) return alert("No message selected!");
+  db.ref('messages/' + latestMessageKey + '/adminReply').set(reply).then(()=>{
+    alert("Reply sent!");
+  }).catch((err)=>{
+    alert("Error: "+err);
+  });
+}
+</script>
+
+</body>
+</html>
