@@ -9,7 +9,7 @@ body {
   text-align: center;
   background: linear-gradient(135deg, #ffe0ea, #ff9fcc);
   padding: 30px;
-  color: black;
+  color: rgb(0, 0, 0);
 }
 h1 { color: #ff3366; font-size: 3em; text-shadow: 2px 2px 5px #ffb3c6; }
 p { font-size: 20px; font-weight: bold; color:rgb(214, 31, 31)#06b300; }
@@ -35,11 +35,13 @@ button.choice-btn:hover {
 textarea {
   width: 80%;
   height: 80px;
-  border-radius: 10px;
-  padding: 10px;
+  border-radius: 30px;
+  padding:20px;
   margin-top: 10px;
-  border: none;
+  border: firebrick
   font-size: 16px;
+  background-color: aqua;
+  
 }
 button.send-btn {
   background: #7b0825;
@@ -51,14 +53,19 @@ button.send-btn {
   font-size: 18px;
   transition: background 0.3s;
 }
-button.send-btn:hover { background: #e62e5c; }
-#adminReply {
+button.send-btn:hover { background: blue;
+font-size: large;
+font-style: italic;
+}
+#adminreply{
   margin-top: 20px;
   font-weight: bold;
-  color: #c80a0a;
+  color: #490ac8;
   font-size: 18px;
-  text-shadow: 1px 1px 2px #ff3366;
+  text-shadow: 1px 1px 2px #6d33ff;
+
 }
+
 </style>
 </head>
 <body>
@@ -78,7 +85,7 @@ button.send-btn:hover { background: #e62e5c; }
 
   <button class="choice-btn" id="gift" onclick="selectChoice('Kennaa Addaa 🎁')" >Kennaa Addaa 🎁</button>
 
-  <button class="choice-btn" id="poetry" onclick="selectChoice('Walaloo Jaalalaa ✍️')" >Walaloo Jaalalaa ✍️</button>
+  <button class="choice-btn" id="poetry" onclick="selectChoice('Walaloo Jaalalaa ✍️')" >Walaloo  ✍️</button>
 
   <button class="choice-btn" id="other" onclick="selectChoice('Kan Biraa 🌀')" >Kan Biraa 🌀</button>
 </div>
@@ -111,13 +118,13 @@ let selectedChoice = "";
 
 function selectChoice(choice){
   selectedChoice = choice;
-  alert("You selected: " + choice);
+  alert("Kan ati filatte: + choice);
 }
 
 function sendMessage(){
   const msg = document.getElementById("herMessage").value;
   if(selectedChoice === "" || msg === ""){
-    alert("Please choose a gift and write a message!");
+    alert("Maaloo dura filannoo armaan olii keessaa filadhuka!");
     return;
   }
   db.ref('messages').push({
@@ -126,8 +133,8 @@ function sendMessage(){
     userMessage: msg,
     adminReply: ""
   }, function(error){
-    if(error) alert("Error sending message: " + error);
-    else alert("Message sent! 💌");
+    if(error) alert("dogoggora ergaa jirta!:" + error);
+    else alert("Ergameera! 💌");
   });
   document.getElementById("herMessage").value = "";
 }
